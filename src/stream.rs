@@ -1,5 +1,5 @@
 use futures::{
-    stream::Stream,
+    prelude::*,
     task::{Context, Poll},
 };
 use nom::{Err, IResult};
