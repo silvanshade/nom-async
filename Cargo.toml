@@ -3,6 +3,9 @@ edition = "2018"
 name = "nom-async"
 version = "0.0.0"
 authors = ["Darin Morrison <darinmorrison@users.noreply.github.com>"]
+license = "Apache-2.0 OR MIT"
+readme = "README.md"
+repository = "https://github.com/darinmorrison/nom-async"
 description = """
 Async adapters for nom streaming parsers
 """
