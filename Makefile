@@ -1,19 +1,23 @@
-.PHONY: check
+.DEFAULT_GOAL := build
+.PHONY: check clean clippy doc fmt test
+
+build:
+	cargo build --all-features --all-targets --benches --bins --examples --tests --workspace
+
 check:
 	cargo check --all-features --all-targets --benches --bins --examples --tests --workspace
 
-.PHONY: clean
 clean:
 	cargo clean
 
-.PHONY: clippy
 clippy:
 	cargo clippy --all-features --all-targets --benches --bins --examples --tests --workspace -- -D warnings
 
-.PHONY: fmt
+doc:
+	cargo +nightly doc --all-features --open
+
 fmt:
 	cargo +nightly fmt --all
 
-.PHONY: test
 test:
 	cargo test --all-features --all-targets --benches --bins --examples --tests --workspace
