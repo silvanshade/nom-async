@@ -29,7 +29,6 @@ where
     I: ?Sized,
     T: AsRef<I>,
     S: Stream<Item = Result<T, E>>,
-    Self: Sized,
 {
     /// Construct a new [NomStream](NomStream) from a parser, buffer, and stream
     pub fn new<F>(parser: F, buffer: B, stream: S) -> Self
