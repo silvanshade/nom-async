@@ -4,9 +4,9 @@
     <strong>Async adapters for nom streaming parsers</strong>
   </p>
   <p style="margin-bottom: 0.5ex;">
-    <!-- <a href="https://darinmorrison.github.io/nom-async/nom_async"><img
+    <a href="https://darinmorrison.github.io/nom-async/nom_async"><img
         src="https://img.shields.io/badge/docs-latest-blueviolet?logo=Read-the-docs&logoColor=white"
-        /></a> -->
+        /></a>
     <a href="https://github.com/darinmorrison/nom-async/actions"><img
         src="https://github.com/darinmorrison/nom-async/workflows/ci/badge.svg"
         /></a>
