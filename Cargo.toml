@@ -1,0 +1,16 @@
+[package]
+publish = false
+edition = "2018"
+name = "nom-async"
+version = "0.0.0"
+authors = ["Darin Morrison <darinmorrison@users.noreply.github.com>"]
+description = """
+Async adapters for nom streaming parsers
+"""
+
+[badges]
+maintenance = { status = "experimental" }
+
+[dependencies]
+futures = "^0.3.1"
+nom = "^5.0.1"
