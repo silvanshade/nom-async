@@ -13,9 +13,9 @@ where
     T: AsRef<I>,
     S: Stream<Item = Result<T, E>>,
 {
+    stream: S,
     parser: Box<dyn 'a + for<'i> Fn(&'i I) -> IResult<&'i I, O>>,
     buffer: B,
-    stream: S,
 }
 
 impl<'a, B, I, O, T, E, S> NomStream<'a, B, I, O, T, E, S>
@@ -25,13 +25,23 @@ where
     T: AsRef<I>,
     S: Stream<Item = Result<T, E>>,
 {
-    /// Construct a new [NomStream](NomStream) from a parser, buffer, and stream
-    pub fn new<F>(parser: F, buffer: B, stream: S) -> Self
+    /// Construct a new [NomStream] from a stream and parser
+    pub fn new<F>(stream: S, parser: F) -> Self
+    where
+        F: 'a + for<'i> Fn(&'i I) -> IResult<&'i I, O>,
+        B: Default,
+    {
+        let buffer = Default::default();
+        Self::new_with_buffer(stream, parser, buffer)
+    }
+
+    /// Construct a new [NomStream] from a stream, parser, and buffer
+    pub fn new_with_buffer<F>(stream: S, parser: F, buffer: B) -> Self
     where
         F: 'a + for<'i> Fn(&'i I) -> IResult<&'i I, O>,
     {
         let parser = Box::new(parser) as Box<_>;
-        NomStream { parser, buffer, stream }
+        NomStream { stream, parser, buffer }
     }
 }
 
