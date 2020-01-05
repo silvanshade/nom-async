@@ -25,3 +25,10 @@
 ## Status
 
 Experimental.
+
+## Examples
+
+```
+> cargo run --example tokens
+> # then type "(", ")", or identifiers (terminated by spaces or parens), line by line
+```
