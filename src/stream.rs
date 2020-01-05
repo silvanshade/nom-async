@@ -48,7 +48,7 @@ where
 impl<'a, B, I, O, T, E, S> Stream for NomStream<'a, B, I, O, T, E, S>
 where
     B: for<'i> AddAssign<&'i I> + Borrow<I> + for<'i> From<&'i I> + Unpin,
-    I: ?Sized + Unpin,
+    I: ?Sized,
     T: AsRef<I>,
     S: Stream<Item = Result<T, E>> + Unpin,
 {
