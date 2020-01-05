@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["NomStream","A Stream constructed from a nom streaming parser"]]});
+initSidebarItems({"struct":[["NomFuture","A Future constructed from a nom streaming parser"],["NomStream","A Stream constructed from a nom streaming parser"]]});
