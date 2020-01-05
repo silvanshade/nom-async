@@ -4,24 +4,25 @@ use futures::{
 };
 use nom::{Err, IResult};
 use std::{borrow::Borrow, convert::AsRef, ops::AddAssign, pin::Pin};
+use std::borrow::ToOwned;
 
 /// A [Future](futures::future::Future) constructed from a nom streaming parser
-pub struct NomFuture<'a, B, I, O, T, E, S>
+pub struct NomFuture<'a, I, O, T, E, S>
 where
-    B: for<'i> AddAssign<&'i I>,
-    I: ?Sized,
+    I: ?Sized + ToOwned,
+    <I as ToOwned>::Owned: for<'i> AddAssign<&'i I>,
     T: AsRef<I>,
     S: Stream<Item = Result<T, E>>,
 {
     stream: S,
     parser: Box<dyn 'a + for<'i> Fn(&'i I) -> IResult<&'i I, O>>,
-    buffer: B,
+    buffer: <I as ToOwned>::Owned,
 }
 
-impl<'a, B, I, O, T, E, S> NomFuture<'a, B, I, O, T, E, S>
+impl<'a, I, O, T, E, S> NomFuture<'a, I, O, T, E, S>
 where
-    B: for<'i> AddAssign<&'i I>,
-    I: ?Sized,
+    I: ?Sized + ToOwned,
+    <I as ToOwned>::Owned: for<'i> AddAssign<&'i I>,
     T: AsRef<I>,
     S: Stream<Item = Result<T, E>>,
 {
@@ -29,14 +30,14 @@ where
     pub fn new<F>(stream: S, parser: F) -> Self
     where
         F: 'a + for<'i> Fn(&'i I) -> IResult<&'i I, O>,
-        B: Default,
+        <I as ToOwned>::Owned: Default,
     {
         let buffer = Default::default();
         Self::new_with_buffer(stream, parser, buffer)
     }
 
     /// Construct a new [NomFuture] from a stream, parser, and buffer
-    pub fn new_with_buffer<F>(stream: S, parser: F, buffer: B) -> Self
+    pub fn new_with_buffer<F>(stream: S, parser: F, buffer: <I as ToOwned>::Owned) -> Self
     where
         F: 'a + for<'i> Fn(&'i I) -> IResult<&'i I, O>,
     {
@@ -45,10 +46,10 @@ where
     }
 }
 
-impl<'a, B, I, O, T, E, S> Future for NomFuture<'a, B, I, O, T, E, S>
+impl<'a, I, O, T, E, S> Future for NomFuture<'a, I, O, T, E, S>
 where
-    B: for<'i> AddAssign<&'i I> + Borrow<I> + for<'i> From<&'i I> + Unpin,
-    I: ?Sized,
+    I: ?Sized + ToOwned,
+    <I as ToOwned>::Owned: for<'i> AddAssign<&'i I> + Unpin,
     T: AsRef<I>,
     S: Stream<Item = Result<T, E>> + Unpin,
 {
@@ -57,7 +58,7 @@ where
     fn poll(mut self: Pin<&mut Self>, cx: &mut Context) -> Poll<O> {
         match (self.parser)(self.buffer.borrow()) {
             Ok((i, o)) => {
-                self.buffer = i.into();
+                self.buffer = i.to_owned();
                 cx.waker().clone().wake();
                 Poll::Ready(o)
             },
