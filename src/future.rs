@@ -3,8 +3,12 @@ use futures::{
     task::{Context, Poll},
 };
 use nom::{Err, IResult};
-use std::{borrow::Borrow, convert::AsRef, ops::AddAssign, pin::Pin};
-use std::borrow::ToOwned;
+use std::{
+    borrow::{Borrow, ToOwned},
+    convert::AsRef,
+    ops::AddAssign,
+    pin::Pin,
+};
 
 /// A [Future](futures::future::Future) constructed from a nom streaming parser
 pub struct NomFuture<'a, I, O, T, E, S>

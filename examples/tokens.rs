@@ -10,7 +10,7 @@ use nom_async::*;
 use tokio::{
     io,
     io::{AsyncBufReadExt, AsyncWriteExt},
-    stream::{StreamExt},
+    stream::StreamExt,
 };
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
